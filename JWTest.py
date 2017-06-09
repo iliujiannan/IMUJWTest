@@ -6,16 +6,16 @@ class room:
     jslx = ""
 
 class jwxt():
-    def __init__(self, UserId, Password):
-        self.UserId = UserId
-        self.Password = Password
+    def __init__(self):
+        self.UserId = "0151122350"
+        self.Password = "15248113901"
         self.oper = "ld"
-        self.zxxnxq = "2016-2017-2-2"
+        self.zxxnxq = "2016-2017-2-2"#3-2,2017-2018-1-2
         self.zxXaq = "01"
-        self.zxJxl = "002"
-        self.zxZc = "16"
+        self.zxJxl = "002" #003
+        self.zxZc = ""
         self.zxJc = ""
-        self.zxxq = "5"
+        self.zxxq = ""
         self.pageNo = None
     def anylisis(self, str1):
         result = []
@@ -28,6 +28,7 @@ class jwxt():
             r.jxl = list_temp2[2].split("<td>")[1].replace("\r\n\t\t\t\t\t\t\t\t\t\t\t", "").replace("\r\n\t\t\t\t\t\t\t\t\t\t","")
             r.js = list_temp2[3].split("<td>")[1].replace("\r\n\t\t\t\t\t\t\t\t\t\t\t", "").replace("\r\n\t\t\t\t\t\t\t\t\t\t","")
             r.jslx = list_temp2[4].split("<td>")[1].replace("\r\n\t\t\t\t\t\t\t\t\t\t\t", "").replace("\r\n\t\t\t\t\t\t\t\t\t\t","")
+            #print(r.js)
             result.append(r)
         return result
     def getCookies(self):
@@ -53,15 +54,17 @@ class jwxt():
         except Exception as e:
             print(e)
             return '登录失败'
-    def executeGetEmptyRoomList(self):
+    def executeGetEmptyRoomList(self, zc, xq):
+        self.zxZc = zc
+        self.xq = xq
         cookie = self.getCookies()
         data = "?oper=" + self.oper + "&zxxnxq=" + self.zxxnxq + "&zxXaq=" + self.zxXaq + "&zxJxl=" + self.zxJxl + "&zxZc=" + self.zxZc + "&zxJc=" + self.zxJc + \
                "&zxxq=" + self.zxxq
-        data3 = "&zxxnxq=" + self.zxxnxq + "&zxXaq=" + self.zxXaq + "&zxJxl=" + self.zxJxl + "&zxZc=" + self.zxZc + "&zxJc=" + self.zxJc + \
-               "&zxxq=" + self.zxxq + "&pagepageSize=20&page=1&currentPage=1"
         url = "http://jwxt.imu.edu.cn/xszxcxAction.do"
         url1 = "http://jwxt.imu.edu.cn/xszxcxAction.do?oper=xszxcx_lb"
-        url3 = "http://jwxt.imu.edu.cn/xszxcxAction.do?oper=tjcx"
+        url3 = "http://jwxt.imu.edu.cn/xszxcxAction.do?oper=tjcx&"
+        data3 = "zxxnxq=" + self.zxxnxq + "&zxXaq=" + self.zxXaq + "&zxJxl=" + self.zxJxl + "&zxZc=" + self.zxZc + "&zxJc=" + self.zxJc + \
+                "&zxxq=" +  self.zxxq + "&pagepageSize=40&page=1&currentPage=1"
         header = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Encoding': 'gzip, deflate',
@@ -75,11 +78,12 @@ class jwxt():
         conn = httplib2.Http()
         conn.request(url1, "GET", headers=header)
         conn.request(url + data, "GET", headers=header)
-        c1, c = conn.request("http://jwxt.imu.edu.cn/xszxcxAction.do?oper=tjcx&zxxnxq=2016-2017-2-2&zxXaq=01&zxJxl=002&zxZc=16&zxJc=&zxxq=5&pagepageSize=20&page=1&currentPage=1", "GET", headers=header)
+        c1, c = conn.request(url3+data3, "GET", headers=header)
         result = str(c.decode('gb2312').replace(' ', ''))
+        #print(result)
         return self.anylisis(result)
 
 
 #call
-j = jwxt("0151122350", "15248113901")
-j.executeGetEmptyRoomList()
+j = jwxt()
+print(len(j.executeGetEmptyRoomList("16", "5")))
