@@ -54,9 +54,10 @@ class jwxt():
         except Exception as e:
             print(e)
             return '登录失败'
-    def executeGetEmptyRoomList(self, zc, xq):
+    def executeGetEmptyRoomList(self, zc, xq, jc):
         self.zxZc = zc
         self.xq = xq
+        self.zxJc = jc
         cookie = self.getCookies()
         data = "?oper=" + self.oper + "&zxxnxq=" + self.zxxnxq + "&zxXaq=" + self.zxXaq + "&zxJxl=" + self.zxJxl + "&zxZc=" + self.zxZc + "&zxJc=" + self.zxJc + \
                "&zxxq=" + self.zxxq
@@ -86,4 +87,4 @@ class jwxt():
 
 #call
 j = jwxt()
-print(len(j.executeGetEmptyRoomList("16", "5")))
+print(len(j.executeGetEmptyRoomList("16", "5", "5,6")))
